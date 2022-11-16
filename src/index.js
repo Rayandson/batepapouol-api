@@ -124,23 +124,23 @@ app.post("/status", async (req, res) => {
     }
 })
 
-// async function IdentificarInativos() {
-//     let mensagensStatus = []
-//     const dayJsObject = dayjs();
-//     try {
-//         const inativos = await db.collection("participantes").find({lastStatus: {$lt: Date.now() - 10000}}).toArray()
-//         await db.collection("participantes").deleteMany({lastStatus: {$lt: Date.now() - 10000}})
-//         inativos.forEach((i) => {
-//             mensagensStatus.push({from: i.name, to: 'Todos', text: 'sai da sala...', type: 'status', time: dayJsObject.format('hh:mm:ss')})
-//             console.log(mensagensStatus)
-//         })
-//         console.log(mensagensStatus)
-//         await db.collection("mensagens").insertMany(mensagensStatus)
-//     } catch {
-//         console.log("0 participantes inativos")             
-//     }
-// }     
+async function IdentificarInativos() {
+    let mensagensStatus = []
+    const dayJsObject = dayjs();
+    try {
+        const inativos = await db.collection("participantes").find({lastStatus: {$lt: Date.now() - 10000}}).toArray()
+        await db.collection("participantes").deleteMany({lastStatus: {$lt: Date.now() - 10000}})
+        inativos.forEach((i) => {
+            mensagensStatus.push({from: i.name, to: 'Todos', text: 'sai da sala...', type: 'status', time: dayJsObject.format('hh:mm:ss')})
+            console.log(mensagensStatus)
+        })
+        console.log(mensagensStatus)
+        await db.collection("mensagens").insertMany(mensagensStatus)
+    } catch {
+        console.log("0 participantes inativos")             
+    }
+}     
 
-// setInterval(IdentificarInativos, 25000)
+setInterval(IdentificarInativos, 15000)
 
 app.listen(5000, () => console.log("app running in port 5000"))
